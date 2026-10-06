@@ -1645,6 +1645,65 @@ window.LUMIERE_NATIVE_TEMPLATE_RSVP_SUBMIT=async function(status,count){
   }
 };
 
+
+/* Intro limiter: the template intro may play for at most ~3s, then the invitation opens. */
+var LUM_INTRO_MAX_MS=3000;
+function lumIntroOverlays(doc,win){
+  var out=[],seen=[];
+  try{
+    var list=doc.querySelectorAll('#introScreen,#intro-screen,#intro,#introOverlay,#intro-overlay,#splashScreen,#splash-screen,#splash,#welcomeScreen,.intro-screen,.introScreen,.intro-overlay,.splash-screen,.opening-screen,[data-intro],[id*="intro" i],[class*="intro-screen" i],[class*="intro-overlay" i],[class*="splash" i]');
+    var vh=Math.max(win.innerHeight||0,1);
+    for(var i=0;i<list.length;i++){
+      var el=list[i];if(!el||el===doc.body||el===doc.documentElement||seen.indexOf(el)>=0)continue;
+      var cs=win.getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden'||cs.opacity==='0')continue;
+      var r=el.getBoundingClientRect();
+      var overlay=(cs.position==='fixed'||cs.position==='absolute')&&r.height>=vh*.6;
+      var firstScreen=r.top<=8&&r.height>=vh*.85;
+      if(overlay||firstScreen){seen.push(el);out.push(el);}
+    }
+  }catch(_){}
+  return out;
+}
+function lumSkipIntro(frame){
+  var doc=null,win=null;try{win=frame.contentWindow;doc=frame.contentDocument||win.document}catch(_){}
+  if(!doc||!doc.body||!win)return;
+  var overlays=lumIntroOverlays(doc,win);
+  if(!overlays.length)return;
+  /* 1) let the template's own handlers finish the intro */
+  ['skipIntro','skipIntroVideo','endIntro','finishIntro','hideIntro','closeIntro','enterInvitation','openInvitation','startInvitation','revealInvitation','showMainContent'].forEach(function(n){
+    try{if(typeof win[n]==='function')win[n]()}catch(_){}
+  });
+  /* 2) tap its own skip / open / enter button */
+  overlays.forEach(function(ov){
+    try{
+      var btns=ov.querySelectorAll('button,a,[role="button"]');
+      for(var i=0;i<btns.length;i++){
+        var t=String(btns[i].textContent||btns[i].getAttribute('aria-label')||'').toLowerCase();
+        if(/skip|open|enter|begin|start|tap|continue|view/.test(t)){btns[i].click();break;}
+      }
+    }catch(_){}
+  });
+  /* 3) if it is still covering the page shortly after, remove it and unlock scrolling */
+  setTimeout(function(){
+    lumIntroOverlays(doc,win).forEach(function(ov){
+      try{ov.querySelectorAll('video,audio').forEach(function(m){try{m.pause()}catch(_){}});}catch(_){}
+      ov.style.setProperty('transition','opacity .35s ease','important');
+      ov.style.setProperty('opacity','0','important');
+      ov.style.setProperty('pointer-events','none','important');
+      setTimeout(function(){try{ov.style.setProperty('display','none','important')}catch(_){}},380);
+    });
+    try{
+      [doc.documentElement,doc.body].forEach(function(el){
+        el.style.removeProperty('overflow');el.style.removeProperty('height');
+        ['no-scroll','locked','intro-active','intro-playing','overflow-hidden','lock-scroll','scroll-locked'].forEach(function(c){el.classList.remove(c)});
+      });
+    }catch(_){}
+  },450);
+}
+function lumScheduleIntroSkip(frame){
+  setTimeout(function(){lumSkipIntro(frame)},LUM_INTRO_MAX_MS);
+  setTimeout(function(){lumSkipIntro(frame)},LUM_INTRO_MAX_MS+900);
+}
 async function loadExactTemplate(frame,key,payload){
   var id=Number(key||0);
   if(id>0){
@@ -1739,6 +1798,7 @@ async function renderExactSameTemplate(iid,cid,recordView){
       },ms);
     });
     setTimeout(function(){if(loader)loader.classList.add('is-hidden')},160);
+    lumScheduleIntroSkip(frame);
   }
   if(retry)retry.onclick=run;
   await run();
