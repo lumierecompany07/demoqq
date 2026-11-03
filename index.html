@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="scroll-smooth" lang="en"><head><script id="lumClassicPhoneTierBoot20261102">(function(){
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head><script id="lumMobileStudioEnabledBoot20261103">window.LUMIERE_MOBILE_EDITOR_ENABLED=true;</script><script id="lumClassicPhoneTierBoot20261102">(function(){
 'use strict';
 try {
  var n=navigator, ua=String(n.userAgent||'');
@@ -40,22 +40,12 @@ if(!Object.fromEntries){Object.fromEntries=function(iterable){var result={};
 })();</script>
 <script id="lumMobileInstantFirstPaint20261102">(function(){
   'use strict';
-  try {
-    var qs=new URLSearchParams(location.search||'');
-    if(qs.has('iid')||qs.get('view')==='rsvp')return; // Never alter guest invitations.
-    if(window.matchMedia&&window.matchMedia('(max-width: 1023px)').matches){
-      var root=document.documentElement;
-      root.classList.add('lum-mobile-instant','lum-realm-entered');
-      window.LUMIERE_MOBILE_INSTANT=true;
-      // Entrance animation and manager network hydration are not a prerequisite
-      // for viewing the public landing page on a phone.
-      document.addEventListener('DOMContentLoaded',function(){
-        if(document.body)document.body.classList.add('realm-opened');
-        var curtain=document.getElementById('royalCurtain');
-        if(curtain)curtain.style.display='none';
-      },{once:true});
-    }
-  } catch(_){}
+  // 2026-11-03: Restore the same LUMIÈRE entrance on mobile as on desktop.
+  // The old mobile-instant boot skipped the entrance and hid #royalCurtain.
+  // Guest invitation / RSVP direct-entry logic is handled independently below.
+  // Keep the optimized template on-demand / low-memory loading untouched.
+  window.LUMIERE_MOBILE_INSTANT=false;
+  document.documentElement.classList.remove('lum-mobile-instant');
 })();</script><script id="lumManagerOnlyEditedFirstPaint20261031">(function(){'use strict';try{
  var q=new URLSearchParams(location.search||'');
  if(q.has('iid')||q.get('view')==='rsvp'||location.protocol==='file:'||document.documentElement.classList.contains('lum-mobile-instant')||(!q.has('manager')&&!q.has('admin')&&!q.has('dashboard')))return;
@@ -966,7 +956,7 @@ html.lgv-immersive-on #fullscreenTemplateModal .lgv-preview-stage #fullscreenTem
 (function(){'use strict';
   var desktopMessage='Editing and customizing invitations are available on desktop. You can browse all templates and live previews here.';
   function guest(){try{var q=new URLSearchParams(location.search||'');return q.has('iid')||q.get('view')==='rsvp'||!!(document.body&&document.body.classList.contains('is-guest-rsvp-view'));}catch(_){return false;}}
-  function mobile(){return !guest() && !!(window.matchMedia&&window.matchMedia('(max-width: 1023px)').matches);}
+  function mobile(){return !window.LUMIERE_MOBILE_EDITOR_ENABLED && !guest() && !!(window.matchMedia&&window.matchMedia('(max-width: 1023px)').matches);}
   function restricted(page){return page==='dashboard'||page==='invitation-studio';}
   function notice(){if(typeof window.showToast==='function')window.showToast(desktopMessage,'info',4800);}
   function blockPage(page){if(!mobile()||!restricted(String(page||'')))return false;notice();return true;}
@@ -1464,15 +1454,20 @@ html.lum-dark body:not(.is-guest-rsvp-view) #royalCurtain .btn-enter-realm:hover
 </div>
 <!-- STEP 2 : customise details -->
 <div class="lum-wz-pane" data-pane="2" id="lumWzPane2">
-<div class="scroll-mt-28 rounded-3xl border border-[#E8E2D5] shadow-sm overflow-hidden lum-index-customizer" id="lumSectionCustomize"><div class="px-5 sm:px-6 py-4 bg-[#F4EFE6]/70 border-b border-[#E8E2D5] flex items-center justify-between gap-3"><div><div class="flex items-center gap-2"><i class="w-5 h-5" data-lucide="sliders-horizontal"></i><h3 class="font-playfair text-xl font-bold">Customize Invitation</h3></div><p class="text-xs text-[#7A7570] mt-1">Fill in your wedding details, then press Save &amp; Preview to see your invitation.</p></div><span class="customizer-live hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 text-[9px] font-bold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live • No Refresh</span></div><div class="mx-5 sm:mx-6 mt-4" id="lumCustomizeSectionBar"><div class="lum-customize-simple-title">Customize Sections</div><div id="lumCustomizeSectionNavMount"></div></div><div class="flex items-center gap-2 mx-5 sm:mx-6 mt-4 p-3 rounded-xl bg-[#F4EFE6] text-xs text-[#7A7570]" id="customizeLockedNotice" role="status"><i class="w-4 h-4" data-lucide="lock"></i><span>Step 1: Select your template(s) and click Done to unlock customization.</span></div><div class="customizer-scroll p-5 sm:p-6 space-y-5 text-xs text-[#2C2A29]" id="dashboardCustomizeFieldsWrap"><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="heart"></i>Couple &amp; Wedding</span></h4><div class="customizer-section-body space-y-5"><div class="customizer-grid-2"><div><label class="customizer-label" for="dashInpBride">Bride Name</label><input class="customizer-input" id="dashInpBride" value="Bride Name"/></div><div><label class="customizer-label" for="dashInpGroom">Groom Name</label><input class="customizer-input" id="dashInpGroom" value="Groom Name"/></div></div><div class="customizer-grid-2"><div><label class="customizer-label" for="dashInpBrideParents">Bride's Parents</label><input class="customizer-input" id="dashInpBrideParents" value="Bride’s Parents"/></div><div><label class="customizer-label" for="dashInpGroomParents">Groom's Parents</label><input class="customizer-input" id="dashInpGroomParents" value="Groom’s Parents"/></div></div><div class="customizer-grid-2"><div><label class="customizer-label" for="dashDateTrigger">Wedding Date</label><div class="lum-premium-date-wrap" id="dashWeddingDatePicker"><input aria-hidden="true" class="lum-premium-date-native" id="dashInpDate" tabindex="-1" type="date"/><button aria-controls="dashDatePopover" aria-expanded="false" aria-haspopup="dialog" class="lum-premium-date-trigger" id="dashDateTrigger" type="button"><span class="lum-premium-date-icon"><i data-lucide="calendar-days"></i></span><span class="lum-premium-date-copy"><span class="lum-premium-date-kicker">Choose your special day</span><strong id="dashDateDisplay">Select wedding date</strong></span><span class="lum-premium-date-chevron"><i data-lucide="chevron-down"></i></span></button><div aria-label="Choose wedding date" class="lum-premium-date-popover hidden" id="dashDatePopover" role="dialog"><div class="lum-date-popover-head"><button aria-label="Previous month" class="lum-date-nav-btn" id="dashDatePrevMonth" type="button"><i data-lucide="chevron-left"></i></button><div class="lum-date-month-copy"><span id="dashDateMonthLabel">Month</span><small id="dashDateYearLabel">Year</small></div><button aria-label="Next month" class="lum-date-nav-btn" id="dashDateNextMonth" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div aria-hidden="true" class="lum-date-weekdays"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div><div class="lum-date-calendar-grid" id="dashDateCalendarGrid"></div><div class="lum-date-picker-footer"><button class="lum-date-footer-btn" id="dashDateTodayBtn" type="button">Today</button><button class="lum-date-footer-btn" id="dashDateClearBtn" type="button">Clear</button><button class="lum-date-done-btn" id="dashDateDoneBtn" type="button"><i data-lucide="check"></i> Done</button></div></div></div></div><div><label class="customizer-label" for="dashInpTime">Wedding Time</label><input class="customizer-input" id="dashInpTime" placeholder="e.g. 9:30 AM Auspicious Nekathing"/></div></div><div><label class="customizer-label" for="dashInpVenue">The Venue</label><input autocomplete="off" class="customizer-input" id="dashInpVenue" placeholder="Enter venue name" value="Your Wedding Venue"/><p class="mt-2 text-[10px] text-[#7A7570]">Enter the venue name manually.</p></div><div><label class="customizer-label" for="dashInpAddress">Venue Address</label><textarea class="customizer-textarea" id="dashInpAddress" rows="2">Wedding venue address</textarea></div><div><label class="customizer-label" for="dashInpMap">Map Link</label><input class="customizer-input" id="dashInpMap" placeholder="Paste a Google Maps link" type="url" value="https://maps.app.goo.gl"/></div></div></section><section class="customizer-section" id="dashForeverSection"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="heart-handshake"></i>Together Forever</span></h4><div class="customizer-section-body space-y-4"><div><label class="customizer-label" for="dashInpForeverTitle">Section Title</label><input class="customizer-input" id="dashInpForeverTitle" maxlength="60" placeholder="Together Forever" value="Together Forever"/></div><div><div class="flex items-center justify-between gap-3 mb-1"><label class="customizer-label !mb-0" for="dashInpBio">Message for Your Guests</label><button class="text-[8px] font-bold text-[#8B551F] hover:underline inline-flex items-center gap-1" onclick='generateDashboardAiDescription("bio")' type="button"><i class="w-3 h-3" data-lucide="sparkles"></i> Generate Message</button></div><textarea class="customizer-textarea" id="dashInpBio" maxlength="320" placeholder="Write a beautiful short message for your guests." rows="4">With joyful hearts, we invite you to share in the love, laughter and beautiful memories of our special day.</textarea><p class="mt-2 text-[10px] text-[#7A7570]">This title and message update the selected template live and are saved with your invitation.</p></div></div></section><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="book-open"></i>Our Story</span></h4><div class="customizer-section-body"><div id="storyEditorList"></div><button class="customizer-add" onclick="addDashboardStoryItem()" type="button"><i class="w-3.5 h-3.5" data-lucide="plus"></i> Add Story Section</button></div></section><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="images"></i>Moments of Love</span></h4><div class="customizer-section-body"><p class="text-[11px] text-[#7A7570] mb-3">Each slot accepts <strong>up to 3 photos.</strong> Photos rotate inside the same visual slot while preserving the template layout.</p><div class="gallery-slot-list" id="galleryEditorList"></div><p aria-live="polite" class="gallery-upload-status" id="galleryUploadStatus"></p></div></section><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="list-checks"></i>Day Itinerary</span></h4><div class="customizer-section-body"><div id="itineraryEditorList"></div><button class="customizer-add" onclick="addDashboardTemplateItineraryItem()" type="button"><i class="w-3.5 h-3.5" data-lucide="plus"></i> Add Event</button></div></section></div><div class="p-5 sm:p-6 border-t border-[#E8E2D5] bg-[#FBF9F5]"><div aria-live="polite" class="hidden mt-3 rounded-2xl border border-[#E8E2D5] bg-white p-3" id="lumSaveProgressCardV2"><div class="flex items-center justify-between gap-3 mb-2"><span class="text-[10px] font-bold uppercase tracking-wider text-[#7A7570]" id="lumSaveProgressLabelV2">Preparing save</span><strong class="text-sm text-[#D4AF37]" id="lumSaveProgressPercentV2">0%</strong></div><div class="h-2.5 rounded-full bg-[#F4EFE6] overflow-hidden"><span class="block h-full rounded-full bg-[#D4AF37] transition-[width] duration-300" id="lumSaveProgressBarV2"></span></div><p class="mt-2 text-[10px] text-[#7A7570]" id="lumSaveProgressDetailV2">Checking your latest customization…</p></div></div></div>
+<div class="scroll-mt-28 rounded-3xl border border-[#E8E2D5] shadow-sm overflow-hidden lum-index-customizer" id="lumSectionCustomize"><div class="px-5 sm:px-6 py-4 bg-[#F4EFE6]/70 border-b border-[#E8E2D5] flex items-center justify-between gap-3"><div><div class="flex items-center gap-2"><i class="w-5 h-5" data-lucide="sliders-horizontal"></i><h3 class="font-playfair text-xl font-bold">Customize Invitation</h3></div><p class="text-xs text-[#7A7570] mt-1">Fill in your wedding details, then press Save &amp; Preview to see your invitation.</p></div><span class="customizer-live hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 text-[9px] font-bold uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Live • No Refresh</span></div><div class="mx-5 sm:mx-6 mt-4" id="lumCustomizeSectionBar"><div class="lum-customize-simple-title">Customize Sections</div><div id="lumCustomizeSectionNavMount"></div></div><div class="flex items-center gap-2 mx-5 sm:mx-6 mt-4 p-3 rounded-xl bg-[#F4EFE6] text-xs text-[#7A7570]" id="customizeLockedNotice" role="status"><i class="w-4 h-4" data-lucide="lock"></i><span>Step 1: Select your template(s) and click Done to unlock customization.</span></div><div class="customizer-scroll p-5 sm:p-6 space-y-5 text-xs text-[#2C2A29]" id="dashboardCustomizeFieldsWrap"><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="heart"></i>Couple &amp; Wedding</span></h4><div class="customizer-section-body space-y-5"><div class="customizer-grid-2"><div><label class="customizer-label" for="dashInpBride">Bride Name</label><input class="customizer-input" id="dashInpBride" value="Bride Name"/></div><div><label class="customizer-label" for="dashInpGroom">Groom Name</label><input class="customizer-input" id="dashInpGroom" value="Groom Name"/></div></div><div class="customizer-grid-2"><div><label class="customizer-label" for="dashInpBrideParents">Bride's Parents</label><input class="customizer-input" id="dashInpBrideParents" value="Bride’s Parents"/></div><div><label class="customizer-label" for="dashInpGroomParents">Groom's Parents</label><input class="customizer-input" id="dashInpGroomParents" value="Groom’s Parents"/></div></div><div class="customizer-grid-2"><div><label class="customizer-label" for="dashDateTrigger">Wedding Date</label><div class="lum-premium-date-wrap" id="dashWeddingDatePicker"><input aria-hidden="true" class="lum-premium-date-native" id="dashInpDate" tabindex="-1" type="date"/><button aria-controls="dashDatePopover" aria-expanded="false" aria-haspopup="dialog" class="lum-premium-date-trigger" id="dashDateTrigger" type="button"><span class="lum-premium-date-icon"><i data-lucide="calendar-days"></i></span><span class="lum-premium-date-copy"><span class="lum-premium-date-kicker">Choose your special day</span><strong id="dashDateDisplay">Select wedding date</strong></span><span class="lum-premium-date-chevron"><i data-lucide="chevron-down"></i></span></button><div aria-label="Choose wedding date" class="lum-premium-date-popover hidden" id="dashDatePopover" role="dialog"><button id="lumDatePopoverCloseAbove" class="lum-date-close-above" type="button" aria-label="Close date picker" title="Close calendar"><span aria-hidden="true">×</span></button><div class="lum-date-popover-head"><button aria-label="Previous month" class="lum-date-nav-btn" id="dashDatePrevMonth" type="button"><i data-lucide="chevron-left"></i></button><div class="lum-date-month-copy"><span id="dashDateMonthLabel">Month</span><small id="dashDateYearLabel">Year</small></div><button aria-label="Next month" class="lum-date-nav-btn" id="dashDateNextMonth" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div><div aria-hidden="true" class="lum-date-weekdays"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div><div class="lum-date-calendar-grid" id="dashDateCalendarGrid"></div><div class="lum-date-picker-footer"><button class="lum-date-footer-btn" id="dashDateTodayBtn" type="button">Today</button><button class="lum-date-footer-btn" id="dashDateClearBtn" type="button">Clear</button><button class="lum-date-done-btn" id="dashDateDoneBtn" type="button"><i data-lucide="check"></i> Done</button></div></div></div></div><div><label class="customizer-label" for="dashInpTime">Wedding Time</label><input class="customizer-input" id="dashInpTime" placeholder="e.g. 9:30 AM Auspicious Nekathing"/></div></div><div><label class="customizer-label" for="dashInpVenue">The Venue</label><input autocomplete="off" class="customizer-input" id="dashInpVenue" placeholder="Enter venue name" value="Your Wedding Venue"/><p class="mt-2 text-[10px] text-[#7A7570]">Enter the venue name manually.</p></div><div><label class="customizer-label" for="dashInpAddress">Venue Address</label><textarea class="customizer-textarea" id="dashInpAddress" rows="2">Wedding venue address</textarea></div><div><label class="customizer-label" for="dashInpMap">Map Link</label><input class="customizer-input" id="dashInpMap" placeholder="Paste a Google Maps link" type="url" value="https://maps.app.goo.gl"/></div></div></section><section class="customizer-section" id="dashForeverSection"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="heart-handshake"></i>Together Forever</span></h4><div class="customizer-section-body space-y-4"><div><label class="customizer-label" for="dashInpForeverTitle">Section Title</label><input class="customizer-input" id="dashInpForeverTitle" maxlength="60" placeholder="Together Forever" value="Together Forever"/></div><div><div class="flex items-center justify-between gap-3 mb-1"><label class="customizer-label !mb-0" for="dashInpBio">Message for Your Guests</label><button class="text-[8px] font-bold text-[#8B551F] hover:underline inline-flex items-center gap-1" onclick='generateDashboardAiDescription("bio")' type="button"><i class="w-3 h-3" data-lucide="sparkles"></i> Generate Message</button></div><textarea class="customizer-textarea" id="dashInpBio" maxlength="320" placeholder="Write a beautiful short message for your guests." rows="4">With joyful hearts, we invite you to share in the love, laughter and beautiful memories of our special day.</textarea><p class="mt-2 text-[10px] text-[#7A7570]">This title and message update the selected template live and are saved with your invitation.</p></div></div></section><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="book-open"></i>Our Story</span></h4><div class="customizer-section-body"><div id="storyEditorList"></div><button class="customizer-add" onclick="addDashboardStoryItem()" type="button"><i class="w-3.5 h-3.5" data-lucide="plus"></i> Add Story Section</button></div></section><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="images"></i>Moments of Love</span></h4><div class="customizer-section-body"><p class="text-[11px] text-[#7A7570] mb-3">Each slot accepts <strong>up to 3 photos.</strong> Photos rotate inside the same visual slot while preserving the template layout.</p><div class="gallery-slot-list" id="galleryEditorList"></div><p aria-live="polite" class="gallery-upload-status" id="galleryUploadStatus"></p></div></section><section class="customizer-section"><h4 class="customizer-heading"><span class="inline-flex items-center gap-2"><i class="w-3.5 h-3.5" data-lucide="list-checks"></i>Day Itinerary</span></h4><div class="customizer-section-body"><div id="itineraryEditorList"></div><button class="customizer-add" onclick="addDashboardTemplateItineraryItem()" type="button"><i class="w-3.5 h-3.5" data-lucide="plus"></i> Add Event</button></div></section></div><div class="p-5 sm:p-6 border-t border-[#E8E2D5] bg-[#FBF9F5]"><div aria-live="polite" class="hidden mt-3 rounded-2xl border border-[#E8E2D5] bg-white p-3" id="lumSaveProgressCardV2"><div class="flex items-center justify-between gap-3 mb-2"><span class="text-[10px] font-bold uppercase tracking-wider text-[#7A7570]" id="lumSaveProgressLabelV2">Preparing save</span><strong class="text-sm text-[#D4AF37]" id="lumSaveProgressPercentV2">0%</strong></div><div class="h-2.5 rounded-full bg-[#F4EFE6] overflow-hidden"><span class="block h-full rounded-full bg-[#D4AF37] transition-[width] duration-300" id="lumSaveProgressBarV2"></span></div><p class="mt-2 text-[10px] text-[#7A7570]" id="lumSaveProgressDetailV2">Checking your latest customization…</p></div></div></div>
 <p class="lum-wz-status" id="dashboardCustomizerStatus"></p>
 <div class="lum-wz-actions">
 <button class="lum-wz-back" onclick="lumWzGo(1)" type="button">
 <span class="ico"><i data-lucide="arrow-left"></i></span><span class="lbl">Back</span>
 </button>
+<div class="lum-mobile-dual-save">
 <button class="lum-wz-next" id="lumWzSaveBtn" onclick="lumWzSave()" type="button">
 <span class="lbl">Save &amp; Preview</span><span class="ico"><i data-lucide="arrow-right"></i></span>
 </button>
+<button class="lum-wz-save-only" id="lumWzSaveOnlyBtn" onclick="lumWzSave(true)" type="button" aria-label="Save changes and continue editing">
+<i data-lucide="save" aria-hidden="true"></i><span>Save</span>
+</button>
+</div>
 </div>
 </div>
 <!-- STEP 3 : template output with their details -->
@@ -11115,7 +11110,7 @@ html.lum-fullscreen-preview-open #lumDockMorePanel,html.lum-fullscreen-preview-o
         orbit.className = 'lum-sync-orbit';
         orbit.setAttribute('aria-hidden', 'true');
         const label = document.createElement('span');
-        label.textContent = 'Securing your session…';
+        label.textContent = '';
         badge.append(orbit, label);
         card.appendChild(badge);
         let job = 0;
@@ -11126,7 +11121,7 @@ html.lum-fullscreen-preview-open #lumDockMorePanel,html.lum-fullscreen-preview-o
         const originalGoogle = typeof window.signInWithGoogle === 'function' ? window.signInWithGoogle : null;
         if (originalSubmit && !originalSubmit.__lumProgressV2) {
             window.submitAuthForm = async function (event) {
-                const id = show('Connecting and securely loading your account…');
+                const id = show('');
                 try {
                     return await originalSubmit.apply(this, arguments);
                 }
@@ -11138,7 +11133,7 @@ html.lum-fullscreen-preview-open #lumDockMorePanel,html.lum-fullscreen-preview-o
         }
         if (originalGoogle && !originalGoogle.__lumProgressV2) {
             window.signInWithGoogle = async function () {
-                const id = show('Signing in with Google…');
+                const id = show('');
                 try {
                     return await originalGoogle.apply(this, arguments);
                 }
@@ -11573,7 +11568,7 @@ function paintOverlay(pct,title,sub){
 function openOverlay(){var o=$('lumWzSaving');if(o){paintOverlay(0,'Saving your invitation');o.classList.add('is-open')}}
 function closeOverlay(){var o=$('lumWzSaving');if(o)o.classList.remove('is-open')}
 
-window.lumWzSave=async function(){
+window.lumWzSave=async function(keepEditing){
   if(wz.saving)return;
   try{if(typeof requireSignedIn==='function'&&!requireSignedIn('save your invitation securely to the cloud'))return}catch(_){}
   if(!complete()){toast('Choose your design and tap Next first.','error');go(1,{silent:true});return}
@@ -11600,13 +11595,17 @@ window.lumWzSave=async function(){
   }
   stop=true;
   if(ok){
-    paintOverlay(100,'Saved \u2713','Opening your invitation\u2026');
-    go(3,{fromSave:true,silent:true});
+    paintOverlay(100,'Saved \u2713',keepEditing?'Your invitation details are saved.':'Opening your invitation\u2026');
+    if(!keepEditing)go(3,{fromSave:true,silent:true});
     await sleep(500);
   }
   closeOverlay();
   wz.saving=false;
-  if(!ok&&!complete())go(1,{silent:true});
+  if(ok&&keepEditing){
+    go(2,{silent:true,noScroll:true});
+    toast('Your details were saved. You can continue editing.','success');
+  }
+  else if(!ok&&!complete())go(1,{silent:true});
   else if(!ok)syncPane1();
 };
 
@@ -15545,6 +15544,7 @@ html.lum-dark #view-templates #lum02Carousel .lum02-sub{color:#b9a897}
    });
   }
   function isBrowseOnly(){
+   if(window.LUMIERE_MOBILE_EDITOR_ENABLED)return false;
    try{return window.innerWidth<1024 || !!(window.matchMedia&&matchMedia('(max-width:1023px)').matches);}catch(_){return false;}
   }
   function active(){return page.classList.contains('active-view')}
@@ -15790,7 +15790,7 @@ html.lum-dark #view-templates #lum02Carousel .lum02-sub{color:#b9a897}
   if(/green|olive|emerald/i.test(t.title||''))return ['#173e2c','#58725a','#ddc18a'];
   return colors[t.vip?'vip':t.category]||colors.royal;
  }
- function mark(t){return t.category==='floral'?'❧':t.category==='minimal'?'✧':t.vip?'✦':'❖'}
+ function mark(t){return t.category==='floral'?'✧':t.category==='minimal'?'✧':t.vip?'✦':'❖'}
  function fullName(t){
   var p=null;try{if(typeof lumiereSampleProfileFor==='function')p=lumiereSampleProfileFor(t.id)}catch(_){ }
   return p&&p.bride&&p.groom?p.bride+' & '+p.groom:(t.title||'Wedding Invitation');
@@ -16540,7 +16540,7 @@ html.lum-calm-open,html.lum-calm-open body{overflow:hidden!important}
   layer.innerHTML='<section class="lum-calm-panel" role="dialog" aria-modal="true" aria-labelledby="lumCalmTitle" tabindex="-1">'+
     '<div class="lum-calm-cover" aria-hidden="true"></div><div class="lum-calm-art" aria-hidden="true"></div>'+
     '<div class="lum-calm-top"><button type="button" class="lum-calm-back" id="lumCalmBack">← Back to templates</button><span class="lum-calm-eyebrow">LUMIÈRE · LIVE PREVIEW</span></div>'+
-    '<div class="lum-calm-heading"><h2 id="lumCalmTitle">Wedding Invitation</h2><div class="lum-calm-ornament">❧ &nbsp; ✧ &nbsp; ❧</div><p class="lum-calm-subtitle" id="lumCalmSubtitle">Explore the invitation in a calm, compact preview.</p></div>'+
+    '<div class="lum-calm-heading"><h2 id="lumCalmTitle">Wedding Invitation</h2><div class="lum-calm-ornament">✧</div><p class="lum-calm-subtitle" id="lumCalmSubtitle">Explore the invitation in a calm, compact preview.</p></div>'+
     '<div class="lum-calm-viewline"><button type="button" class="lum-calm-icon-btn" id="lumCalmPrev" aria-label="Previous template">‹</button>'+
     '<div class="lum-calm-phone"><div class="lum-calm-screen" id="lumCalmScreen"><div class="lum-calm-loading" id="lumCalmLoading"><div class="lum-calm-loadring">✦</div><small id="lumCalmLoadText">Preparing your invitation…</small></div></div><span class="lum-calm-island" aria-hidden="true"></span><span class="lum-calm-homebar" aria-hidden="true"></span></div>'+
     '<button type="button" class="lum-calm-icon-btn" id="lumCalmNext" aria-label="Next template">›</button></div>'+
@@ -16550,7 +16550,7 @@ html.lum-calm-open,html.lum-calm-open body{overflow:hidden!important}
   layer.querySelector('#lumCalmPrev').addEventListener('click',function(){step(-1)});
   layer.querySelector('#lumCalmNext').addEventListener('click',function(){step(1)});
   layer.querySelector('#lumCalmPick').addEventListener('click',function(){
-    if(window.matchMedia&&window.matchMedia('(max-width:1023px)').matches)return;
+    if(!window.LUMIERE_MOBILE_EDITOR_ENABLED && window.matchMedia&&window.matchMedia('(max-width:1023px)').matches)return;
     var id=currentId;close();if(typeof window.lumFourChooseTemplate==='function')window.lumFourChooseTemplate(id);
     var use=document.getElementById('lum02Use');if(use)use.click();
   });
@@ -16779,4 +16779,574 @@ html:not(.lum-dark) body:not(.is-guest-rsvp-view) #royalCurtain .btn-enter-realm
   color:#382e1b!important;
 }
 </style>
+<!-- Mobile gallery uses the Manager > Template Links preview loading animation.
+     The preview page itself remains read-only; no hosted invitation code is modified. -->
+<style id="lumMobileManagerMatchedLoaderFitV2">
+@media (max-width:767px){
+ /* Exactly one gallery phone stays in the existing carousel. ~140% of the old 164px width. */
+ #view-templates #lum02Carousel .lum02-collection{
+   grid-template-columns:34px minmax(0,1fr) 34px!important;
+   max-width:390px!important;gap:3px!important;margin-inline:auto!important;
+ }
+ #view-templates #lum02Carousel .lum04-grid{
+   grid-template-columns:minmax(0,1fr)!important;
+   width:100%!important;max-width:315px!important;min-width:0!important;
+   margin-inline:auto!important;justify-items:center!important;gap:9px!important;
+ }
+ #view-templates #lum02Carousel .lum04-item{
+   width:100%!important;max-width:310px!important;min-width:0!important;
+   gap:10px!important;align-items:center!important;
+ }
+ #view-templates #lum02Carousel .lum04-phone{
+   width:min(230px,29.4dvh,calc(100vw - 98px))!important;
+   max-width:230px!important;aspect-ratio:390 / 805!important;
+   border-width:4px!important;border-radius:29px!important;padding:5px!important;
+   transform:none!important;
+ }
+ #view-templates #lum02Carousel .lum04-phone:hover{transform:none!important}
+ #view-templates #lum02Carousel .lum04-screen{border-radius:21px!important}
+ #view-templates #lum02Carousel .lum02-arrow{
+   width:34px!important;min-width:34px!important;height:43px!important;min-height:43px!important;
+   font-size:28px!important;
+ }
+ #view-templates #lum02Carousel .lum05-preview-tap{border-radius:21px!important}
+ #view-templates #lum02Carousel .lum04-ring-loader{
+   background:linear-gradient(160deg,rgba(251,248,242,.98),rgba(244,237,225,.98))!important;
+   gap:12px!important;padding:12px 9px!important;
+   transition:opacity .24s ease,visibility .24s ease!important;
+ }
+ #view-templates #lum02Carousel .lum04-loader-ring{
+   width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;
+   border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:0 0 0 7px rgba(207,174,70,.06)!important;
+ }
+ #view-templates #lum02Carousel .lum04-loader-ring::before{
+   content:''!important;position:absolute!important;inset:0!important;border-radius:50%!important;
+   border:3px solid rgba(207,174,70,.22)!important;border-top-color:#cfae46!important;
+   border-right-color:rgba(207,174,70,.22)!important;
+   animation:lumManagerMatchingSpin .72s linear infinite!important;
+ }
+ #view-templates #lum02Carousel .lum04-loader-ring::after,
+ #view-templates #lum02Carousel .lum04-loader-center{display:none!important}
+ #view-templates #lum02Carousel .lum04-loader-brand{
+   font:700 14px/1.2 'Playfair Display',Georgia,serif!important;
+   color:#2c2926!important;letter-spacing:.08em!important;
+ }
+ #view-templates #lum02Carousel .lum04-loader-title{
+   font:700 9px/1.4 system-ui,sans-serif!important;
+   color:#8a8177!important;letter-spacing:.05em!important;
+ }
+ #view-templates #lum02Carousel .lum04-loader-status{
+   font:500 9px/1.5 system-ui,sans-serif!important;color:#8a8177!important;
+   max-width:180px!important;text-align:center!important;
+ }
+ #view-templates #lum02Carousel .lum04-loader-status::after{
+   content:'';display:block;width:92px;height:3px;margin:11px auto 0;border-radius:999px;
+   background:linear-gradient(90deg,#d8bd62,#b98d25) no-repeat left center / 42% 100%,#e6ddcf;
+   animation:lumManagerMatchingLine 1s ease-in-out infinite;
+ }
+ #view-templates #lum02Carousel .lum04-item[data-live-state='error'] .lum04-loader-status::after,
+ #view-templates #lum02Carousel .lum04-item[data-live-state='unpublished'] .lum04-loader-status::after{animation:none;background:#e6ddcf}
+ #view-templates #lum02Carousel .lum04-item[data-live-state='error'] .lum04-loader-ring::before,
+ #view-templates #lum02Carousel .lum04-item[data-live-state='unpublished'] .lum04-loader-ring::before{animation:none!important}
+}
+@keyframes lumManagerMatchingSpin{to{transform:rotate(360deg)}}
+@keyframes lumManagerMatchingLine{
+  0%{background-position:-65px center,center}
+  50%{background-position:31px center,center}
+  100%{background-position:100px center,center}
+}
+/* Preview This Design: on a mobile phone, use the actual device viewport instead of a mini phone.
+   CSS overrides the old 390px scaled iframe so the invitation uses native responsive layout. */
+@media(max-width:767px){
+ #lumCalmPreviewLayer{
+   inset:0!important;display:block!important;padding:0!important;overflow:hidden!important;
+   background:#fbf8f2!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+ }
+ #lumCalmPreviewLayer[hidden]{display:none!important}
+ #lumCalmPreviewLayer .lum-calm-panel{
+   display:block!important;position:relative!important;margin:0!important;
+   width:100vw!important;max-width:none!important;min-width:0!important;
+   height:100vh!important;height:100dvh!important;max-height:none!important;min-height:0!important;
+   padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+   overflow:hidden!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-top{
+   position:absolute!important;z-index:24!important;top:calc(env(safe-area-inset-top,0px) + 7px)!important;
+   left:calc(env(safe-area-inset-left,0px) + 8px)!important;
+   width:auto!important;min-height:0!important;display:block!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-back{
+   font-size:0!important;min-height:34px!important;height:34px!important;
+   border-radius:999px!important;padding:6px 12px!important;
+   background:rgba(255,251,244,.95)!important;border:1px solid #d8b987!important;
+   color:#49392a!important;box-shadow:0 3px 11px rgba(39,28,22,.18)!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-back::before{content:'‹  Back';font:700 11px/1 system-ui,sans-serif!important}
+ #lumCalmPreviewLayer .lum-calm-eyebrow,
+ #lumCalmPreviewLayer .lum-calm-heading,
+ #lumCalmPreviewLayer .lum-calm-bottom,
+ #lumCalmPreviewLayer .lum-calm-icon-btn,
+ #lumCalmPreviewLayer .lum-calm-island,
+ #lumCalmPreviewLayer .lum-calm-homebar{display:none!important}
+ #lumCalmPreviewLayer .lum-calm-viewline{
+   position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+   min-height:0!important;margin:0!important;padding:0!important;display:block!important;overflow:hidden!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-phone{
+   position:relative!important;display:block!important;box-sizing:border-box!important;
+   width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;
+   min-width:0!important;aspect-ratio:auto!important;
+   padding:0!important;border:0!important;border-radius:0!important;
+   box-shadow:none!important;overflow:hidden!important;background:#fffaf4!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-screen{
+   width:100%!important;height:100%!important;border-radius:0!important;
+   -webkit-overflow-scrolling:touch!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-iframe{
+   position:absolute!important;inset:0!important;left:0!important;top:0!important;
+   display:block!important;box-sizing:border-box!important;
+   width:100%!important;height:100%!important;max-width:none!important;
+   transform:none!important;transform-origin:top left!important;
+   border:0!important;border-radius:0!important;
+   -webkit-overflow-scrolling:touch!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-loading{
+   background:linear-gradient(160deg,rgba(251,248,242,.99),rgba(244,237,225,.99))!important;
+   gap:12px!important;padding:20px!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-loadring{
+   position:relative!important;width:36px!important;height:36px!important;
+   min-width:36px!important;min-height:36px!important;
+   border:3px solid rgba(207,174,70,.22)!important;border-top-color:#cfae46!important;
+   border-right-color:rgba(207,174,70,.22)!important;border-radius:50%!important;
+   color:transparent!important;font-size:0!important;
+   box-shadow:0 0 0 7px rgba(207,174,70,.06)!important;
+   animation:lumManagerMatchingSpin .72s linear infinite!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-loadring::after{display:none!important}
+ #lumCalmPreviewLayer .lum-calm-loading small{
+   font:600 9px/1.5 system-ui,sans-serif!important;color:#8a8177!important;
+   text-align:center!important;letter-spacing:.04em!important;
+ }
+ #lumCalmPreviewLayer .lum-calm-loading small::after{
+   content:'';display:block;width:92px;height:3px;margin:12px auto 0;border-radius:99px;
+   background:linear-gradient(90deg,#d8bd62,#b98d25) no-repeat left center / 42% 100%,#e6ddcf;
+   animation:lumManagerMatchingLine 1s ease-in-out infinite;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ #view-templates #lum02Carousel .lum04-loader-ring::before,
+ #view-templates #lum02Carousel .lum04-loader-status::after,
+ #lumCalmPreviewLayer .lum-calm-loadring,
+ #lumCalmPreviewLayer .lum-calm-loading small::after{animation:none!important}
+}
+</style>
+
+
+<!-- LUMIÈRE: mobile-only desktop editing notice, isolated from template/view code. -->
+<style id="lumMobileDesktopNoticeStyle20261103">
+#lumDesktopNoticeOverlay[hidden]{display:none!important}
+#lumDesktopNoticeOverlay{
+ position:fixed;inset:0;z-index:2147483600;display:grid;place-items:center;
+ padding:calc(16px + env(safe-area-inset-top,0px)) 18px calc(16px + env(safe-area-inset-bottom,0px));
+ background:rgba(42,33,25,.56);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+ overflow:auto;overscroll-behavior:contain;
+}
+#lumDesktopNoticeOverlay,#lumDesktopNoticeOverlay *{box-sizing:border-box}
+#lumDesktopNoticeOverlay .lum-desktop-note{
+ position:relative;isolation:isolate;width:min(100%,420px);max-height:min(92dvh,680px);
+ overflow-y:auto;overflow-x:hidden;border:1px solid #e1cfae;border-radius:27px;
+ background:linear-gradient(156deg,#fffaf3 0%,#f7eee2 56%,#f0e5d7 100%);
+ box-shadow:0 24px 72px rgba(22,15,10,.32),0 0 0 4px rgba(255,253,249,.12);
+ padding:30px 26px 26px;text-align:center;color:#3a3028;
+ animation:lumDesktopNotePop .26s cubic-bezier(.2,.75,.2,1) both;
+}
+#lumDesktopNoticeOverlay .lum-desktop-note:before{
+ content:"";position:absolute;inset:10px;border:1px solid rgba(197,160,92,.29);
+ border-radius:20px;pointer-events:none;z-index:-1;
+}
+#lumDesktopNoticeOverlay .lum-desktop-close{
+ position:absolute;right:14px;top:13px;display:grid;place-items:center;width:32px;height:32px;
+ background:rgba(255,255,255,.61);border:1px solid #e6d6bd;border-radius:50%;
+ color:#725b40;font:600 21px/1 system-ui;cursor:pointer;
+}
+#lumDesktopNoticeOverlay .lum-desktop-close:focus-visible,
+#lumDesktopNoticeOverlay .lum-desktop-okay:focus-visible{outline:3px solid #b58b45;outline-offset:3px}
+#lumDesktopNoticeOverlay .lum-desktop-mark{
+ display:grid;place-items:center;width:62px;height:62px;margin:9px auto 16px;
+ border-radius:21px;border:1px solid #dbc398;background:rgba(255,255,255,.52);
+ color:#a57b39;box-shadow:0 8px 27px rgba(153,111,55,.10);
+}
+#lumDesktopNoticeOverlay .lum-desktop-eyebrow{font:700 10px/1.5 system-ui,sans-serif;letter-spacing:.22em;color:#9d7845}
+#lumDesktopNoticeOverlay h2{font:600 clamp(23px,6.8vw,30px)/1.18 'Playfair Display',Georgia,serif;
+ margin:10px auto 14px;letter-spacing:-.015em;color:#4a3729;max-width:310px}
+#lumDesktopNoticeOverlay .lum-desktop-rule{height:1px;width:90px;margin:0 auto 17px;
+ background:linear-gradient(90deg,transparent,#c9a663,transparent)}
+#lumDesktopNoticeOverlay .lum-desktop-message{
+ max-width:328px;margin:0 auto;font:400 13px/1.85 'Plus Jakarta Sans',system-ui,sans-serif;
+ color:#65564b;
+}
+#lumDesktopNoticeOverlay .lum-desktop-message strong{color:#4b3929;font-weight:750}
+#lumDesktopNoticeOverlay .lum-desktop-okay{
+ display:block;width:100%;margin:23px auto 19px;padding:14px 20px;min-height:46px;
+ border:1px solid #9e772c;border-radius:14px;cursor:pointer;
+ background:linear-gradient(130deg,#d8b76b,#ba8e38);color:#302619;
+ font:800 12px/1.35 system-ui,sans-serif;letter-spacing:.07em;
+ box-shadow:0 8px 18px rgba(127,88,33,.15);
+}
+#lumDesktopNoticeOverlay .lum-desktop-okay:active{transform:translateY(1px)}
+#lumDesktopNoticeOverlay .lum-desktop-sign{margin:0 auto 4px;color:#90734d;
+ font:700 10px/1.5 system-ui,sans-serif;letter-spacing:.20em}
+#lumDesktopNoticeOverlay .lum-desktop-thanks{margin:0;font:italic 600 18px/1.3 'Playfair Display',Georgia,serif;color:#8b6937}
+html.lum-desktop-notice-open,html.lum-desktop-notice-open body{overflow:hidden!important}
+@keyframes lumDesktopNotePop{from{opacity:0;transform:translateY(15px) scale(.965)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){#lumDesktopNoticeOverlay .lum-desktop-note{animation:none!important}}
+@media(max-height:590px){#lumDesktopNoticeOverlay .lum-desktop-note{padding:18px 20px}#lumDesktopNoticeOverlay .lum-desktop-mark{margin:0 auto 9px;width:45px;height:45px}#lumDesktopNoticeOverlay h2{font-size:22px;margin:6px auto 9px}#lumDesktopNoticeOverlay .lum-desktop-okay{margin:13px auto}}
+</style>
+<script id="lumMobileDesktopNoticeScript20261103">
+(function(){'use strict';
+ var overlay=null,previousFocus=null;
+ function mobile(){return !window.LUMIERE_MOBILE_EDITOR_ENABLED && !!(window.matchMedia&&window.matchMedia('(max-width: 1023px)').matches)}
+ function build(){
+  if(overlay)return overlay;
+  overlay=document.createElement('div');overlay.id='lumDesktopNoticeOverlay';overlay.hidden=true;
+  overlay.innerHTML='<section class="lum-desktop-note" role="dialog" aria-modal="true" aria-labelledby="lumDesktopNoticeHeading" aria-describedby="lumDesktopNoticeMessage" tabindex="-1">'+
+   '<button type="button" class="lum-desktop-close" data-lum-note-close aria-label="Close message">×</button>'+
+   '<div class="lum-desktop-mark" aria-hidden="true"><svg width="35" height="35" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="25" height="17" rx="2.5"/><path d="M12 26.5h8m-4-4v4"/><path d="M13 14.5h6m-3-3v6"/></svg></div>'+
+   '<span class="lum-desktop-eyebrow">A NOTE FROM LUMIÈRE</span>'+
+   '<h2 id="lumDesktopNoticeHeading">Your special day deserves the perfect design.</h2>'+
+   '<div class="lum-desktop-rule" aria-hidden="true"></div>'+
+   '<p class="lum-desktop-message" id="lumDesktopNoticeMessage">To <strong>edit and personalise your invitation</strong> for your special day, please open the <strong>LUMIÈRE website on a desktop or laptop</strong>.<br>You can still explore our beautiful templates here on your phone.</p>'+
+   '<button type="button" class="lum-desktop-okay" data-lum-note-close>CONTINUE EXPLORING</button>'+
+   '<p class="lum-desktop-sign">— ADMIN LUMIÈRE —</p><p class="lum-desktop-thanks">Thank you for choosing us! ✧</p></section>';
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click',function(e){if(e.target===overlay||e.target.closest('[data-lum-note-close]'))close()});
+  return overlay;
+ }
+ function open(){
+  if(!document.body)return;
+  var node=build();previousFocus=document.activeElement;
+  node.hidden=false;document.documentElement.classList.add('lum-desktop-notice-open');
+  var button=node.querySelector('.lum-desktop-close');if(button)button.focus({preventScroll:true});
+ }
+ function close(){
+  if(!overlay||overlay.hidden)return;
+  overlay.hidden=true;document.documentElement.classList.remove('lum-desktop-notice-open');
+  try{if(previousFocus&&previousFocus.isConnected&&typeof previousFocus.focus==='function')previousFocus.focus({preventScroll:true})}catch(_){}
+ }
+ // Capture before the legacy click handlers: only mobile editing is blocked.
+ document.addEventListener('click',function(e){
+  var button=e.target&&e.target.closest&&e.target.closest('#lum02Use,#lumCalmPick');
+  if(!button||!mobile()||button.disabled)return;
+  e.preventDefault();e.stopImmediatePropagation();open();
+ },true);
+ document.addEventListener('keydown',function(e){
+  if(!overlay||overlay.hidden)return;
+  if(e.key==='Escape'){e.preventDefault();close();return;}
+  if(e.key!=='Tab')return;
+  var controls=Array.from(overlay.querySelectorAll('button:not([disabled])'));
+  if(!controls.length)return;
+  var first=controls[0],last=controls[controls.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+ });
+ window.addEventListener('resize',function(){if(overlay&&!overlay.hidden&&!mobile())close()},{passive:true});
+})();
+</script>
+<style id="lumMobileStudioEnabledStyle20261103">
+@media(max-width:1023px){
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio.active-view,
+ html body:not(.is-guest-rsvp-view) #view-dashboard.active-view{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+ html body:not(.is-guest-rsvp-view) #mobileDropdownNav [data-nav-view="invitation-studio"],
+ html body:not(.is-guest-rsvp-view) #mobileDropdownNav [data-nav-view="dashboard"],
+ html body:not(.is-guest-rsvp-view) #lumDockMorePanel button[data-lum-dock-view="invitation-studio"]{display:flex!important}
+ html body:not(.is-guest-rsvp-view) .lum-mobile-view-note{display:none!important}
+ html body:not(.is-guest-rsvp-view) #lum02Carousel .lum02-mobile-note{display:none!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio > section{padding:14px 9px 94px!important;background:#f4f0e9!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz{padding:6px 0 40px!important;max-width:700px!important;width:100%!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-head{
+   padding:19px 16px 15px!important;border-radius:20px!important;box-shadow:0 8px 22px rgba(53,41,27,.12)!important;
+ }
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-head small{font-size:9px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-head h3{font-size:24px!important;margin-top:5px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-head p{font-size:11px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-steps{margin-top:16px!important;gap:0!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-step{font-size:9px!important;letter-spacing:.01em!important;gap:6px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-step .n{width:32px!important;height:32px!important;font-size:12px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-step::before{top:15px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-pane.is-active{margin-top:14px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #lumSectionTemplate,
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #lumSectionCustomize,
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #dashboardLivePreviewCard{
+   border-radius:18px!important;max-width:100%!important;min-width:0!important;
+ }
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #lumSectionTemplate > div,
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #dashboardCustomizeFieldsWrap{padding:14px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .customizer-grid-2{display:grid!important;grid-template-columns:repeat(1,minmax(0,1fr))!important;gap:12px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .customizer-input,
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio textarea,
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio select{max-width:100%!important;min-width:0!important;font-size:16px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-actions{padding:13px 6px 4px!important;gap:11px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-next,
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-prev{min-height:44px!important;touch-action:manipulation!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #dashboardCustomizeFieldsWrap{height:auto!important;max-height:none!important;overflow:visible!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #lumCustomizeSectionNavMount{max-width:100%!important;overflow-x:auto!important;overscroll-behavior-x:contain}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3.is-active #dashboardPreviewColumn{max-width:100%!important;overflow:hidden!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3.is-active .dashboard-template-size-stage{max-width:100%!important;min-width:0!important}
+}
+@media(max-width:375px){
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-head{padding-inline:12px!important}
+ html body:not(.is-guest-rsvp-view) #view-invitation-studio .lum-wz-step{font-size:8px!important}
+}
+</style><script id="lumMobileStudioEnabledRuntime20261103">(function(){'use strict';
+function mobile(){return !!(window.matchMedia&&matchMedia('(max-width:1023px)').matches)}
+function guest(){try{var q=new URLSearchParams(location.search);return q.has('iid')||q.get('view')==='rsvp'||document.body.classList.contains('is-guest-rsvp-view')}catch(_){return false}}
+function setup(){if(guest())return;
+ var notes=document.querySelectorAll('.lum02-mobile-note');notes.forEach(function(el){el.textContent='Choose a design, then edit, preview and share it right from your phone.'});
+ var subtitle=document.getElementById('lumWzSub');if(subtitle&&mobile())subtitle.textContent='Create your invitation right here on your phone.';
+ // Do not run separate writes: all edits use the original form and cloud save actions.
+ var use=document.getElementById('lum02Use');if(use)use.setAttribute('title','Edit this invitation on your phone or computer');
+ // The mobile menu is a way back to in-progress edits without crowding the gallery.
+ var menu=document.getElementById('mobileDropdownNav');if(menu){
+  var studio=menu.querySelector('[data-nav-view="invitation-studio"]');
+  if(studio){studio.textContent='My Invitation Studio';studio.style.setProperty('display','flex','important');}
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
+})();</script>
+<style id="lumMobileSectionArrowsAndSaveAlignment20261103">
+/* Mobile-only: arrows reveal the sections previously hidden off-screen. */
+@media (max-width: 767px) {
+  body #view-invitation-studio #lumCustomizeSectionNavMount,
+  body #view-dashboard #lumCustomizeSectionNavMount {
+    display:flex!important;align-items:center!important;gap:5px!important;width:100%!important;min-width:0!important;
+  }
+  body #view-invitation-studio #lumCustomizeSectionNavMount #lumCustomizeSectionNav,
+  body #view-dashboard #lumCustomizeSectionNavMount #lumCustomizeSectionNav {
+    order:2!important;flex:1 1 auto!important;min-width:0!important;width:0!important;
+    overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;
+    scroll-behavior:smooth;scroll-snap-type:x proximity;
+    overscroll-behavior-x:contain;touch-action:pan-x;
+  }
+  body #lumCustomizeSectionNav .lum-customize-tab {scroll-snap-align:start;}
+  body #lumCustomizeSectionNavMount .lum-section-arrow {
+    order:1;flex:0 0 32px;width:32px;height:38px;display:inline-grid!important;
+    place-items:center;border:1px solid #e7d7b5;border-radius:12px;
+    background:#fff9ef;color:#987022;box-shadow:0 2px 6px #94763712;
+    cursor:pointer;touch-action:manipulation;
+  }
+  body #lumCustomizeSectionNavMount .lum-section-arrow[data-dir="next"] {order:3;}
+  body #lumCustomizeSectionNavMount .lum-section-arrow:disabled {opacity:.28;cursor:default;}
+  body #lumCustomizeSectionNavMount .lum-section-arrow:focus-visible {outline:2px solid #b88b31;outline-offset:2px;}
+  body #lumCustomizeSectionNavMount .lum-section-arrow svg {width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;}
+  body #view-invitation-studio #lumWzPane2>.lum-wz-actions {display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;}
+  body #view-invitation-studio #lumWzPane2>.lum-wz-actions>.lum-wz-back {
+    grid-column:1/-1!important;justify-self:start!important;min-width:74px!important;
+  }
+  body #view-invitation-studio #lumWzPane2 .lum-mobile-dual-save {
+    grid-column:1/-1;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    width:100%;gap:8px;
+  }
+  body #view-invitation-studio #lumWzPane2 .lum-mobile-dual-save>button {
+    min-width:0!important;width:100%!important;min-height:43px!important;
+    font-size:11px!important;padding:10px 7px!important;line-height:1.2!important;
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    border-radius:14px;font-weight:800;white-space:nowrap;
+  }
+  body #view-invitation-studio #lumWzPane2 .lum-mobile-dual-save .lum-wz-save-only {
+    border:1px solid #d4af37;background:#fff9ed;color:#6e4e1d;
+    box-shadow:0 4px 12px rgba(90,66,25,.08);
+  }
+  body #view-invitation-studio #lumWzPane2 .lum-wz-save-only svg {width:15px;height:15px;flex:none;}
+}
+/* Desktop keeps the original Save & Preview CTA. */
+@media(min-width:768px){
+  body #view-invitation-studio .lum-mobile-dual-save{margin-left:auto;display:flex;}
+  body #view-invitation-studio .lum-wz-save-only{display:none!important;}
+  body #lumCustomizeSectionNavMount .lum-section-arrow{display:none!important;}
+}
+@media(prefers-reduced-motion:reduce){body #lumCustomizeSectionNav{scroll-behavior:auto!important;}}
+</style>
+
+<script id="lumMobileSectionArrows20261103">
+(function(){
+'use strict';
+function guest(){try{var q=new URLSearchParams(location.search);return q.has('iid')||q.get('view')==='rsvp'}catch(_){return false}}
+if(guest())return;
+function init(){
+ var mount=document.getElementById('lumCustomizeSectionNavMount');
+ if(!mount)return;
+ var directions=[['previous','Previous customize sections','M16 18l-6-6 6-6'],['next','Next customize sections','M8 6l6 6-6 6']];
+ directions.forEach(function(d){
+  if(mount.querySelector('.lum-section-arrow[data-dir="'+d[0]+'"]'))return;
+  var b=document.createElement('button');b.type='button';b.className='lum-section-arrow';
+  b.dataset.dir=d[0];b.setAttribute('aria-label',d[1]);b.title=d[1];
+  b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+d[2]+'"/></svg>';
+  b.addEventListener('click',function(){
+   var nav=document.getElementById('lumCustomizeSectionNav');if(!nav)return;
+   var dir=d[0]==='next'?1:-1;
+   var distance=Math.max(100,Math.round(nav.clientWidth*.82));
+   var left=nav.scrollLeft+dir*distance;
+   nav.scrollTo({left:Math.max(0,left),behavior:window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+   setTimeout(update,250);
+  });
+  mount.appendChild(b);
+ });
+ var nav=document.getElementById('lumCustomizeSectionNav');
+ function update(){
+  var n=document.getElementById('lumCustomizeSectionNav');if(!n)return;
+  var max=Math.max(0,n.scrollWidth-n.clientWidth);
+  var prev=mount.querySelector('[data-dir="previous"]'),next=mount.querySelector('[data-dir="next"]');
+  if(prev)prev.disabled=n.scrollLeft<=2;
+  if(next)next.disabled=n.scrollLeft>=max-2;
+  mount.dataset.hasOverflow=max>3?'true':'false';
+ }
+ if(nav&&!nav.dataset.lumArrowsWired){
+  nav.dataset.lumArrowsWired='1';
+  nav.addEventListener('scroll',update,{passive:true});
+  nav.addEventListener('click',function(e){
+   var btn=e.target&&e.target.closest?e.target.closest('.lum-customize-tab'):null;
+   if(btn){try{btn.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})}catch(_){}}
+   setTimeout(update,180);
+  });
+  if('ResizeObserver'in window){new ResizeObserver(update).observe(nav);}
+  new MutationObserver(update).observe(nav,{childList:true});
+ }
+ if(!nav){setTimeout(init,200);return;}
+ update();requestAnimationFrame(update);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+ window.addEventListener('resize',function(){var n=document.getElementById('lumCustomizeSectionNav');if(n)n.dispatchEvent(new Event('scroll'));},{passive:true});
+})();
+</script>
+
+<style id="lumMobileQuietAuthAndCleanWizardFlow20261103">
+/* Authentication: blur the ALREADY FILLED login/create-account card and show only
+   the compact animated gold ring until Firebase finishes or reports an error. */
+#authModal > .lum-auth-card,#authModal > div:first-child { position:relative!important; }
+#authModal #lumAuthProgressV2 {
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  max-width:none!important;min-height:100%!important;z-index:80!important;
+  margin:0!important;padding:0!important;border:0!important;border-radius:inherit!important;
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  background:rgba(246,241,232,.40)!important;
+  -webkit-backdrop-filter:blur(9px) saturate(.86)!important;
+  backdrop-filter:blur(9px) saturate(.86)!important;
+  box-shadow:none!important;
+  pointer-events:auto!important;
+}
+#authModal #lumAuthProgressV2[hidden]{display:none!important;}
+#authModal #lumAuthProgressV2 > span:not(.lum-sync-orbit) {display:none!important;}
+#authModal #lumAuthProgressV2 .lum-sync-orbit {
+  width:62px!important;height:62px!important;flex:none!important;
+  border:3px solid rgba(211,176,89,.20)!important;
+  border-top-color:#aa7927!important;
+  border-right-color:#d0a74b!important;
+  background:radial-gradient(circle at 50% 50%,rgba(255,251,242,.89) 0 62%,transparent 65%);
+  border-radius:50%!important;
+  box-shadow:0 5px 27px rgba(90,66,25,.13),inset 0 0 0 7px rgba(255,252,244,.67)!important;
+  animation:lumAuthSpin .84s linear infinite!important;
+}
+@media(max-width:767px){
+  /* The actual live preview is a separate wizard step and is NEVER shown below
+     the detail fields. Avoid running invisible preview media on low-end phones. */
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3:not(.is-active){display:none!important;}
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane2 #dashboardPreviewColumn,
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane2 .customizer-live{display:none!important;}
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane2 .lum-wz-actions .lum-mobile-dual-save #lumWzSaveBtn{
+    gap:5px!important;letter-spacing:.005em!important;text-transform:none!important;
+    font-size:11px!important;padding:8px 4px 8px 10px!important;
+  }
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane2 .lum-wz-actions #lumWzSaveBtn .ico{
+    width:24px!important;height:24px!important;flex:0 0 24px!important;
+    animation:none!important;
+  }
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane2 .lum-wz-actions #lumWzSaveBtn .ico svg{width:14px;height:14px;}
+  /* In the Preview screen, only the actual template and navigation are needed. */
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions .lum-wz-ghost{display:none!important;}
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions{
+    display:flex!important;flex-wrap:nowrap!important;align-items:center!important;
+    gap:8px!important;padding:9px!important;
+  }
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions .lum-wz-back{flex:0 0 auto;gap:5px;padding-right:12px!important;font-size:10px!important;letter-spacing:0!important;}
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions .lum-wz-back .ico{width:30px;height:30px;}
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions-right{margin-left:auto!important;width:auto!important;flex:0 1 auto;}
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions-right .lum-wz-next{
+    letter-spacing:.01em!important;font-size:10px!important;padding:6px 6px 6px 12px!important;gap:7px!important;text-transform:none!important;
+  }
+  body:not(.is-guest-rsvp-view) #view-invitation-studio #lumWzPane3 .lum-wz-actions-right .lum-wz-next .ico{width:32px!important;height:32px!important;animation:none!important;}
+}
+@media(prefers-reduced-motion:reduce){#authModal #lumAuthProgressV2 .lum-sync-orbit{animation:none!important;border-color:#b78b39!important;}}
+</style>
+<script id="lumMobileQuietAuthAndCleanWizardFlowRuntime20261103">
+(function(){
+ 'use strict';
+ function guest(){try{var q=new URLSearchParams(location.search);return q.has('iid')||q.get('view')==='rsvp'}catch(_){return false}}
+ if(guest())return;
+ function refresh(){
+   var mobile=window.matchMedia&&window.matchMedia('(max-width:767px)').matches;
+   var previewBtn=document.getElementById('lumWzSaveBtn');
+   var label=previewBtn&&previewBtn.querySelector('.lbl');
+   if(label){label.textContent=mobile?'See Template Preview':'Save & Preview';previewBtn.setAttribute('aria-label',mobile?'Save your details and see template preview':'Save and preview');}
+   var prevPane=document.getElementById('lumWzPane3');
+   if(prevPane){
+     var back=prevPane.querySelector('.lum-wz-actions .lum-wz-back .lbl');
+     var next=prevPane.querySelector('.lum-wz-actions-right #lumWzNext3 .lbl');
+     if(back)back.textContent=mobile?'Edit Details':'Back';
+     if(next)next.textContent=mobile?'Next · Guest Links':'Next';
+   }
+   var formTitle=document.querySelector('#lumWzPane2 #lumSectionCustomize p.text-xs');
+   if(formTitle)formTitle.textContent=mobile?'Complete your wedding details, then tap See Template Preview.':'Fill in your wedding details, then press Save & Preview to see your invitation.';
+   var badge=document.getElementById('lumAuthProgressV2');
+   if(badge){badge.setAttribute('aria-label','Signing in securely');}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refresh,{once:true});else refresh();
+ if(window.matchMedia){var mq=window.matchMedia('(max-width:767px)');if(mq.addEventListener)mq.addEventListener('change',refresh);else if(mq.addListener)mq.addListener(refresh);}
+})();
+</script>
+
+<!-- Lumiere mobile date picker: keep the month arrows distinct from the elevated close button. -->
+<style id="lumDateCalendarElevatedClose20261103">
+@media (max-width: 767px) {
+  /* The date popover stays in the document flow; the X floats above its top-right edge. */
+  #dashDatePopover{position:relative!important;overflow:visible!important;isolation:isolate}
+  #dashDatePopover .lum-date-close-above {
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    position:absolute!important;top:-22px!important;right:1px!important;z-index:40!important;
+    width:38px!important;height:38px!important;min-width:38px!important;
+    padding:0!important;border-radius:50%!important;
+    border:1px solid #e4cfab!important;background:#fffaf2!important;
+    color:#6b5130!important;box-shadow:0 5px 15px rgba(72,53,27,.14)!important;
+    font:600 23px/1 system-ui,sans-serif!important;cursor:pointer!important;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #dashDatePopover .lum-date-close-above span{line-height:1;transform:translateY(-1px)}
+  #dashDatePopover .lum-date-close-above:focus-visible{outline:2px solid #b58c35!important;outline-offset:3px}
+  /* Calendar right navigation must look like NEXT MONTH, not a close X. */
+  #dashDateNextMonth{display:grid!important;place-items:center!important}
+  #dashDateNextMonth>svg,#dashDateNextMonth>i{display:none!important}
+  #dashDateNextMonth::after{content:""!important;display:block!important;width:10px!important;height:10px!important;
+    border-top:2px solid currentColor!important;border-right:2px solid currentColor!important;
+    transform:translateX(-2px) rotate(45deg)!important}
+}
+@media (min-width:768px){#dashDatePopover .lum-date-close-above{display:none!important}}
+</style>
+<script id="lumDateCalendarElevatedCloseJS20261103">
+(function(){
+ 'use strict';
+ document.addEventListener('click',function(event){
+   var close=event.target.closest&&event.target.closest('#lumDatePopoverCloseAbove');
+   if(!close)return;
+   event.preventDefault();event.stopPropagation();
+   if(typeof window.closeWeddingDatePicker==='function')window.closeWeddingDatePicker();
+   else {
+     var pop=document.getElementById('dashDatePopover'),trigger=document.getElementById('dashDateTrigger');
+     if(pop)pop.classList.add('hidden');
+     if(trigger)trigger.setAttribute('aria-expanded','false');
+   }
+ },true);
+})();
+</script>
 </body></html>
